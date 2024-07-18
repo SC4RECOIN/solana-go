@@ -17,7 +17,7 @@ package ws
 import (
 	"fmt"
 
-	"github.com/SC4RECOIN/solana-go"
+	"github.com/gagliardetto/solana-go"
 	"github.com/gagliardetto/solana-go/rpc"
 )
 
