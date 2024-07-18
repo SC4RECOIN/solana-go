@@ -15,7 +15,9 @@
 package ws
 
 import (
-	"github.com/gagliardetto/solana-go"
+	"fmt"
+
+	"github.com/SC4RECOIN/solana-go"
 	"github.com/gagliardetto/solana-go/rpc"
 )
 
@@ -112,7 +114,7 @@ func (sw *LogSubscription) Recv() (*LogResult, error) {
 	case d := <-sw.sub.stream:
 		res, ok := d.(*LogResult)
 		if !ok {
-			continue
+			return nil, fmt.Errorf("message was not a log result")
 		}
 		return res, nil
 	case err := <-sw.sub.err:
