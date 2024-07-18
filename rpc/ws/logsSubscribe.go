@@ -110,7 +110,11 @@ type LogSubscription struct {
 func (sw *LogSubscription) Recv() (*LogResult, error) {
 	select {
 	case d := <-sw.sub.stream:
-		return d.(*LogResult), nil
+		res, ok := d.(*LogResult)
+		if !ok {
+			continue
+		}
+		return res, nil
 	case err := <-sw.sub.err:
 		return nil, err
 	}
