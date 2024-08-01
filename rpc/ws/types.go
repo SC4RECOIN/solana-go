@@ -20,7 +20,6 @@ package ws
 import (
 	stdjson "encoding/json"
 	"fmt"
-	"math/rand"
 	"net/http"
 	"time"
 )
@@ -32,15 +31,24 @@ type request struct {
 	ID      uint64      `json:"id"`
 }
 
-func newRequest(params []interface{}, method string, configuration map[string]interface{}) *request {
+func (c *Client) newRequest(params []interface{}, method string, configuration map[string]interface{}) *request {
 	if params != nil && configuration != nil {
 		params = append(params, configuration)
 	}
+
+	// find available id
+	var id uint64 = 1
+	for ; ; id++ {
+		if _, ok := c.subscriptionByRequestID[id]; !ok {
+			break
+		}
+	}
+
 	return &request{
 		Version: "2.0",
 		Method:  method,
 		Params:  params,
-		ID:      uint64(rand.Uint32()),
+		ID:      id,
 	}
 }
 

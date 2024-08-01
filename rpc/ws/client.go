@@ -287,7 +287,7 @@ func (c *Client) closeSubscription(reqID uint64, err error) {
 }
 
 func (c *Client) unsubscribe(subID uint64, method string) error {
-	req := newRequest([]interface{}{subID}, method, nil)
+	req := c.newRequest([]interface{}{subID}, method, nil)
 	data, err := req.encode()
 	if err != nil {
 		return fmt.Errorf("unable to encode unsubscription message for subID %d and method %s", subID, method)
@@ -311,7 +311,7 @@ func (c *Client) subscribe(
 	c.lock.Lock()
 	defer c.lock.Unlock()
 
-	req := newRequest(params, subscriptionMethod, conf)
+	req := c.newRequest(params, subscriptionMethod, conf)
 	data, err := req.encode()
 	if err != nil {
 		return nil, fmt.Errorf("subscribe: unable to encode subsciption request: %w", err)
